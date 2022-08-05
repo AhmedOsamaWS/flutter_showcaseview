@@ -64,7 +64,6 @@ class Showcase extends StatefulWidget {
   final VoidCallback? onTargetDoubleTap;
   final VoidCallback? onTargetLongPress;
   final BorderRadius? tipBorderRadius;
-  final Column? bodyColumn;
 
   /// Defines blur value.
   /// This will blur the background while displaying showcase.
