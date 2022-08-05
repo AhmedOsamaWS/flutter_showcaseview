@@ -26,6 +26,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'custom_tooltip.dart';
 import 'extension.dart';
 import 'get_position.dart';
 import 'layout_overlays.dart';
@@ -63,6 +64,7 @@ class Showcase extends StatefulWidget {
   final VoidCallback? onTargetDoubleTap;
   final VoidCallback? onTargetLongPress;
   final BorderRadius? tipBorderRadius;
+  final Column? bodyColumn;
 
   /// Defines blur value.
   /// This will blur the background while displaying showcase.
@@ -103,6 +105,7 @@ class Showcase extends StatefulWidget {
   })  : height = null,
         width = null,
         container = null,
+        bodyColumn = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
             "overlay opacity must be between 0 and 1."),
         assert(
@@ -146,8 +149,54 @@ class Showcase extends StatefulWidget {
     this.tipBorderRadius,
   })  : showArrow = false,
         onToolTipClick = null,
+        bodyColumn = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
             "overlay opacity must be between 0 and 1.");
+
+  const Showcase.withColumnWidget({
+    required this.key,
+    required this.child,
+    required this.bodyColumn,
+    this.width,
+    this.shapeBorder,
+    this.overlayColor = Colors.black45,
+    this.overlayOpacity = 0.75,
+    this.titleTextStyle,
+    this.descTextStyle,
+    this.showcaseBackgroundColor = Colors.white,
+    this.textColor = Colors.black,
+    this.scrollLoadingWidget = const CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Colors.white)),
+    this.showArrow = true,
+    this.onTargetClick,
+    this.disposeOnTap,
+    this.animationDuration = const Duration(milliseconds: 2000),
+    this.disableAnimation,
+    this.contentPadding =
+        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    this.onToolTipClick,
+    this.overlayPadding = EdgeInsets.zero,
+    this.blurValue,
+    this.radius,
+    this.onTargetLongPress,
+    this.onTargetDoubleTap,
+    this.tipBorderRadius,
+  })  : height = null,
+        container = null,
+        title = null,
+        description = null,
+        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
+            "overlay opacity must be between 0 and 1."),
+        assert(
+            onTargetClick == null
+                ? true
+                : (disposeOnTap == null ? false : true),
+            "disposeOnTap is required if you're using onTargetClick"),
+        assert(
+            disposeOnTap == null
+                ? true
+                : (onTargetClick == null ? false : true),
+            "onTargetClick is required if you're using disposeOnTap");
 
   @override
   State<Showcase> createState() => _ShowcaseState();
@@ -324,27 +373,45 @@ class _ShowcaseState extends State<Showcase> {
                   shapeBorder: widget.shapeBorder,
                 ),
               if (!_isScrollRunning)
-                ToolTipWidget(
-                  position: position,
-                  offset: offset,
-                  screenSize: screenSize,
-                  title: widget.title,
-                  description: widget.description,
-                  titleTextStyle: widget.titleTextStyle,
-                  descTextStyle: widget.descTextStyle,
-                  container: widget.container,
-                  tooltipColor: widget.showcaseBackgroundColor,
-                  textColor: widget.textColor,
-                  showArrow: widget.showArrow,
-                  contentHeight: widget.height,
-                  contentWidth: widget.width,
-                  onTooltipTap: _getOnTooltipTap,
-                  contentPadding: widget.contentPadding,
-                  disableAnimation: widget.disableAnimation ??
-                      showCaseWidgetState.disableAnimation,
-                  animationDuration: widget.animationDuration,
-                  borderRadius: widget.tipBorderRadius,
-                ),
+                if(widget.bodyColumn != null)
+                  CustomToolTip(
+                    position: position,
+                    offset: offset,
+                    screenSize: screenSize,
+                    container: widget.container,
+                    tooltipColor: widget.showcaseBackgroundColor,
+                    showArrow: widget.showArrow,
+                    contentHeight: widget.height,
+                    contentWidth: widget.width,
+                    onTooltipTap: _getOnTooltipTap,
+                    contentPadding: widget.contentPadding,
+                    disableAnimation: widget.disableAnimation ??
+                        showCaseWidgetState.disableAnimation,
+                    animationDuration: widget.animationDuration,
+                    borderRadius: widget.tipBorderRadius,
+                    bodyColumn: widget.bodyColumn,
+                  )else
+                  ToolTipWidget(
+                    position: position,
+                    offset: offset,
+                    screenSize: screenSize,
+                    title: widget.title,
+                    description: widget.description,
+                    titleTextStyle: widget.titleTextStyle,
+                    descTextStyle: widget.descTextStyle,
+                    container: widget.container,
+                    tooltipColor: widget.showcaseBackgroundColor,
+                    textColor: widget.textColor,
+                    showArrow: widget.showArrow,
+                    contentHeight: widget.height,
+                    contentWidth: widget.width,
+                    onTooltipTap: _getOnTooltipTap,
+                    contentPadding: widget.contentPadding,
+                    disableAnimation: widget.disableAnimation ??
+                        showCaseWidgetState.disableAnimation,
+                    animationDuration: widget.animationDuration,
+                    borderRadius: widget.tipBorderRadius,
+                  ),
             ],
           )
         : const SizedBox.shrink();

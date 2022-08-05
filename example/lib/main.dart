@@ -178,13 +178,30 @@ class _MailPageState extends State<MailPage> {
                               Expanded(
                                 child: Row(
                                   children: <Widget>[
-                                    Showcase(
+                                    Showcase.withColumnWidget(
                                       key: _one,
-                                      description: 'Tap to see menu options',
+                                      bodyColumn: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Column(
+                                            children: [
+                                              const Text('Learn !'),
+                                              const Text(
+                                                  'With Wasla, shopping online will save you money. Click Next to learn how.'),
+                                              MaterialButton(
+                                                child: const Text('Next'),
+                                                onPressed: () {},
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      // width: 10,
                                       child: Icon(
                                         Icons.menu,
                                         color: Theme.of(context).primaryColor,
                                       ),
+
                                     ),
                                     const SizedBox(
                                       width: 10,
