@@ -404,13 +404,11 @@ class MailTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 if (showCaseDetail)
-                  Showcase.withWidget(
+                  Showcase.withColumnInBaseView(
                     key: showCaseKey!,
-                    height: 50,
-                    width: 140,
                     shapeBorder: const CircleBorder(),
                     radius: const BorderRadius.all(Radius.circular(150)),
-                    container: Column(
+                    bodyColumn: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
